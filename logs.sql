@@ -9,7 +9,8 @@
 -- 		3. on which days did more than 1% of requests lead to errors?
 -- 			- example: July 29, 2016 — 2.5% errors
 
-select author_info.*, log.path 
-	from author_info inner join log.path
-	on log.path like concat("%", articles.slug, "%")
-	where log.status like "%200%"
+select author_info.*, count(*) as click_count 
+	from author_info inner join log
+	on log.path like concat('%', author_info.article_name, '%')
+	where log.status like '%200%'
+	limit 2;
