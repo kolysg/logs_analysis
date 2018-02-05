@@ -9,8 +9,12 @@
 -- 		3. on which days did more than 1% of requests lead to errors?
 -- 			- example: July 29, 2016 — 2.5% errors
 
-select author_info.*, count(*) as click_count 
+create view most_read_article as 
+	select author_info.article_name, count (*) as click_count 
 	from author_info inner join log
 	on log.path like concat('%', author_info.article_name, '%')
 	where log.status like '%200%'
-	limit 2;
+	group by author_info.article_name, log.path
+	order by click_count desc
+	limit 3;
+
