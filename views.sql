@@ -12,9 +12,22 @@
 -- 		3. on which days did more than 1% of requests lead to errors?
 -- 			- example: July 29, 2016 — 2.5% errors
 
--- """
-
 
 CREATE VIEW author_details AS
-	select author, slug, title
-	from articles
+	SELECT author, slug, title
+	FROM articles
+
+-- join authors with articles table to create a table that also has author's name
+
+CREATE VIEW author_info AS 
+	SELECT authors.name as author_name, articles.slug as article_name, articles.title as article_title, articles.author as author_id 
+	FROM articles, authors
+	WHERE authors.id = articles.author
+	ORDER BY authors.name;
+
+
+-- create a view with articles, how many success counts, author.
+
+
+
+
