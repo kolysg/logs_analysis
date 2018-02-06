@@ -27,7 +27,13 @@ CREATE VIEW author_info AS
 
 
 -- create a view with articles, how many success counts, author.
-
+create view articles_info as 
+	select author_info.article_name, author_info.author_name, count (*) as click_count 
+	from author_info inner join log
+	on log.path like concat('%', author_info.article_name, '%')
+	where log.status like '%200%'
+	group by author_info.article_name, author_info.author_name, log.path
+	order by click_count desc;
 
 
 
