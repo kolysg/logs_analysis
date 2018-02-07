@@ -1,11 +1,28 @@
 """create a reporting tool
-	#prints out reports (in plain text)
-	#3 questions to answer
-		1. what are the most popular three articles -sorted list?
-			- how do i measure popularity? 
-		2. who are the most pop authors - sorted list
-		3. on which days did more than 1% of requests lead to errors?
-			- example: July 29, 2016 — 2.5% errors
-
+	which answers three questions about the news database
+	- run_queries - function connects to the database through Python DB-API and runs a query.
+	- print_headers - prints a header before each function call 
+	- print functions for each queries
 """
+
+import psycopg2
+
+DBNAME = 'news'
+
+def run_queries(user_query) :
+	"""execute user's query and returns the result in a table"""
+	db = psycopg2.connect(database-DBNAME)
+	c = db.cursor()
+	c.execute(user_query)
+	results = c.fetchall()
+	db.close()
+	return results
+
+def print_header(query_text):
+	"""Prints a header before each query"""
+	print('\n\t' + heading + '\n')
+
+
+
+
 
