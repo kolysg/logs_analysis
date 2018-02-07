@@ -71,20 +71,20 @@ Follow these steps to get started:
 ## EXPECTED OUTPUT
 ````
 
-                TOP 3 ARTICLES OF ALL TIME
+        TOP 3 ARTICLES OF ALL TIME
 
  "Candidate is jerk, alleges rival" -- 338647 views
  "Bears love berries, alleges bear" -- 253801 views
  "Bad things gone, say good people" -- 170098 views
 
-                TOP AUTHORS OF ALL TIME
+        TOP AUTHORS OF ALL TIME
 
  Ursula La Multa -- 507594 views
  Rudolf von Treppenwitz -- 423457 views
  Anonymous Contributor -- 170098 views
  Markoff Chaney -- 84557 views
 
-                DAYS WITH GREATER THAN 1% 404 REQUESTS
+        DAYS WITH GREATER THAN 1% 404 REQUESTS
 
  July 17, 2016 -- 2.3 % errors
 ````
