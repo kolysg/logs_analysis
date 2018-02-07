@@ -22,7 +22,34 @@ def print_header(query_text):
 	"""Prints a header before each query"""
 	print('\n\t' + heading + '\n')
 
+def find_top_three_articles():
+	"""Prints the three most popular articles"""
+	most_popular_articles = run_queries(('select * from most_popular_articles'))
+	print_header('Three most popular articles')
 
+	for name, count in most_popular_articles:
+		print('{} -- {} views'.format(name, count))
+
+def find_popular_authors():
+	"""Prints the most popular authors in a sorted table"""
+	most_popular_authors = run_queries(('select * from most_popular_authors'))
+	print_header('Most popular authors based on article-clicks')
+
+	for name,count in most_popular_authors:
+		print('{} -- {} views'.format(name, count))
+
+def find_bad_requests():
+	"""Prints all the 404 requests per day exceeding 1% of the total requests"""
+	bad_requests = run_queries(('select * from high_error_days'))
+	print_header('All bad requests that exceed 1% of the total requests')
+
+	for day, percentage in bad_requests:
+		print ('{0:%B %d, %y} -- {1:.2f} % errors'.format(day, percentage))
+
+if __name__ = '__main__':
+	find_top_three_articles();
+	find_popular_authors();
+	find_bad_requests();
 
 
 
