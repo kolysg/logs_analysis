@@ -11,7 +11,7 @@ DBNAME = 'news'
 
 def run_queries(user_query) :
 	"""execute user's query and returns the result in a table"""
-	db = psycopg2.connect(database-DBNAME)
+	db = psycopg2.connect(database=DBNAME)
 	c = db.cursor()
 	c.execute(user_query)
 	results = c.fetchall()
@@ -20,11 +20,11 @@ def run_queries(user_query) :
 
 def print_header(query_text):
 	"""Prints a header before each query"""
-	print('\n\t' + heading + '\n')
+	print('\n\t' + query_text + '\n')
 
 def find_top_three_articles():
 	"""Prints the three most popular articles"""
-	most_popular_articles = run_queries(('select * from most_popular_articles'))
+	most_popular_articles = run_queries(('select * from popular_articles'))
 	print_header('Three most popular articles')
 
 	for name, count in most_popular_articles:
@@ -32,10 +32,10 @@ def find_top_three_articles():
 
 def find_popular_authors():
 	"""Prints the most popular authors in a sorted table"""
-	most_popular_authors = run_queries(('select * from most_popular_authors'))
+	most_popular_authors = run_queries(('select * from popular_authors'))
 	print_header('Most popular authors based on article-clicks')
 
-	for name,count in most_popular_authors:
+	for name, count in most_popular_authors:
 		print('{} -- {} views'.format(name, count))
 
 def find_bad_requests():
@@ -44,11 +44,11 @@ def find_bad_requests():
 	print_header('All bad requests that exceed 1% of the total requests')
 
 	for day, percentage in bad_requests:
-		print ('{0:%B %d, %y} -- {1:.2f} % errors'.format(day, percentage))
+		print ('{0:%B %d, %Y} -- {1:.1f} % errors'.format(day, percentage))
 
-if __name__ = '__main__':
-	find_top_three_articles();
-	find_popular_authors();
+if __name__ == '__main__':
+	# find_top_three_articles();
+	# find_popular_authors();
 	find_bad_requests();
 
 
