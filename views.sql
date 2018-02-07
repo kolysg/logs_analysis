@@ -13,7 +13,7 @@
 -- 			- example: July 29, 2016 — 2.5% errors
 
 -- author and articles joined
-create view author_info as 
+create view author_details as 
 	select authors.name as author_name, articles.slug as article_name, articles.title as article_title, articles.author as author_id 
 	from articles, authors
 	where authors.id = articles.author
@@ -21,9 +21,9 @@ create view author_info as
 
 
 -- successful clicks to articles and authors joined
-create view articles_info as 
+create view articles_details as 
 	select a.article_name, a.author_name, count (*) as click_count 
-		from author_info as a inner join log
+		from author_details as a inner join log
 		on log.path like concat('%', a.article_name, '%')
 		where log.status like '%200%'
 		group by a.article_name, a.author_name, log.path
@@ -31,16 +31,16 @@ create view articles_info as
 
 
 -- most three popular articles
-create view most_popular_articles as
-	select articles_info.article_name, articles_info.click_count
-		from articles_info
+create view popular_articles as
+	select articles_details.article_name as name, articles_details.click_count as count
+		from articles_details
 		limit 3;
 
 
 -- most popular author
-create view most_popular_author as
+create view popular_authors as
 	select a.author_name as name, count(*) as click_count
-		from author_info as a inner join log
+		from author_details as a inner join log
 		on log.path like concat('%', a.article_name, '%')
 		where log.status like '%200%'
 		group by a.author_name
@@ -48,7 +48,7 @@ create view most_popular_author as
 
 
 -- total requests per day
-create view total_rqst as 
+create view total_rqsts as 
 	select date(log.time) as day, count(log.id) as total
 	from log
 	group by (date(log.time))
@@ -56,7 +56,7 @@ create view total_rqst as
 
 
 -- total bad requests per day
-create view error_rqst as 
+create view error_rqsts as 
 	select date(log.time) as day, count(log.id) as total_errors
 	from log
 	where log.status like '404%'
@@ -68,7 +68,7 @@ create view error_rqst as
 create view high_error_days as 
 	select t.day as day,
 	round(e.total_errors::numeric * 100::numeric / t.total::numeric, 2) as percentage
-	from total_rqst as t join error_rqst as e
+	from total_rqsts as t join error_rqsts as e
 	on t.day = e.day
 	where round(e.total_errors::numeric * 100::numeric / t.total::numeric, 2) > 1::numeric;
 
