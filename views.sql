@@ -13,10 +13,6 @@
 -- 			- example: July 29, 2016 — 2.5% errors
 
 
-CREATE VIEW author_details AS
-	SELECT author, slug, title
-	FROM articles
-
 -- join authors with articles table to create a table that also has author's name
 
 CREATE VIEW author_info AS 
@@ -28,12 +24,41 @@ CREATE VIEW author_info AS
 
 -- create a view with articles, how many success counts, author.
 create view articles_info as 
-	select author_info.article_name, author_info.author_name, count (*) as click_count 
-	from author_info inner join log
-	on log.path like concat('%', author_info.article_name, '%')
+	select a.article_name, a.author_name, count (*) as click_count 
+	from author_info as a inner join log
+	on log.path like concat('%', a.article_name, '%')
 	where log.status like '%200%'
-	group by author_info.article_name, author_info.author_name, log.path
+	group by a.article_name, a.author_name, log.path
 	order by click_count desc;
+
+
+-- create view total_requests_per_day as
+-- select cast(log.time as date), log.status, count(*) as total_req
+-- 	from log
+-- 	group by log.time, log.status
+-- 	order by total_req desc
+-- 	limit 2;
+
+-- create view error_requests_per_day as 
+-- 	select cast(log.time as date), log.status, count(*) as error_req
+-- 		from log
+-- 		where log.status like '%404%'
+-- 		group by log.time, log.status
+-- 		order by error_req desc
+-- 		limit 2;
+
+create view total_rqst as 
+	select date(log.time) as day, count(log.id) as total
+	from log
+	group by (date(log.time))
+	order by (date(log.time));
+
+create view error_rqst as 
+	select date(log.time) as day, count(log.id) as total_errors
+	from log
+	where log.status like '404%'
+	group by (date(log.time))
+	order by (date(log.time));
 
 
 
