@@ -95,7 +95,8 @@ This program utilizes views in PostgreSQL. The queries that make up these views 
 
 #### authors_details
 ````sql
-  select authors.name as author_name, articles.slug as article_name, articles.title as article_title, articles.author as author_id 
+  create view authors_details as 
+    select authors.name as author_name, articles.slug as article_name, articles.title as article_title, articles.author as author_id 
     from articles, authors
     where authors.id = articles.author
     order by authors.name;
@@ -103,34 +104,36 @@ This program utilizes views in PostgreSQL. The queries that make up these views 
 
 #### articles_details
 ````sql
-  select a.article_name, a.author_name, count (*) as click_count 
-    from authors_details as a inner join log
-    on log.path like concat('%', a.article_name, '%')
-    where log.status like '%200%'
-    group by a.article_name, a.author_name, log.path
-    order by click_count desc;
+  create view authors_details as 
+    select authors.name as author_name, articles.slug as article_name, articles.title as article_title, articles.author as author_id 
+    from articles, authors
+    where authors.id = articles.author
+    order by authors.name;
  ````
 
 #### popular_articles
 ````sql
-  select articles_details.article_name as name, articles_details.click_count as count
-    from articles_details
-    limit 3;
+  create view popular_articles as
+    select articles_details.article_title as title, articles_details.click_count as count
+      from articles_details
+      limit 3;
  ````
 
 #### popular_authors
 ````sql
-  select a.author_name as name, count(*) as click_count
-    from authors_details as a inner join log
-    on log.path like concat('%', a.article_name, '%')
-    where log.status like '%200%'
-    group by a.author_name
-    order by click_count desc;
+  create view popular_authors as
+    select a.author_title as title, count(*) as click_count
+      from authors_details as a inner join log
+      on log.path like concat('/article/', a.article_name)
+      where log.status like '%200%'
+      group by a.author_title
+      order by click_count desc;
  ````
 
 #### total_rqsts
 ````sql
- select date(log.time) as day, count(log.id) as total
+ create view total_rqsts as 
+  select date(log.time) as day, count(log.id) as total
     from log
     group by (date(log.time))
     order by (date(log.time));
@@ -138,7 +141,8 @@ This program utilizes views in PostgreSQL. The queries that make up these views 
 
 #### error_rqsts
 ````sql
- select date(log.time) as day, count(log.id) as total_errors
+ create view error_rqsts as 
+  select date(log.time) as day, count(log.id) as total_errors
     from log
     where log.status like '404%'
     group by (date(log.time))
@@ -147,7 +151,8 @@ This program utilizes views in PostgreSQL. The queries that make up these views 
 
 #### high_error_days
 ````sql
- select t.day as day,
+ create view high_error_days as 
+  select t.day as day,
   round(e.total_errors::numeric * 100::numeric / t.total::numeric, 2) as percentage
     from total_rqsts as t join error_rqsts as e
     on t.day = e.day

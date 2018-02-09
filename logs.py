@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Create a reporting tool to run_queries."""
 
 import psycopg2
@@ -22,7 +23,7 @@ def print_header(query_text):
 
 def find_top_three_articles():
     """Print the three most popular articles."""
-    most_popular_articles = run_queries(('select * from popular_articles'))
+    most_popular_articles = run_queries('select * from popular_articles')
     print_header('Three most popular articles')
 
     for name, count in most_popular_articles:
@@ -31,7 +32,7 @@ def find_top_three_articles():
 
 def find_popular_authors():
     """Print the most popular authors in a sorted table."""
-    most_popular_authors = run_queries(('select * from popular_authors'))
+    most_popular_authors = run_queries('select * from popular_authors')
     print_header('Most popular authors based on article-clicks')
 
     for name, count in most_popular_authors:
@@ -40,11 +41,11 @@ def find_popular_authors():
 
 def find_bad_requests():
     """Print 1% of the 404 requests per day."""
-    bad_requests = run_queries(('select * from high_error_days'))
+    bad_requests = run_queries('select * from high_error_days')
     print_header('All bad requests that exceed 1% of the total requests')
 
     for day, percentage in bad_requests:
-        print ('{0:%B %d, %Y} -- {1:.1f} % errors'.format(day, percentage))
+        print('{0:%B %d, %Y} -- {1:.1f} % errors'.format(day, percentage))
 
 
 if __name__ == '__main__':

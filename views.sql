@@ -22,28 +22,28 @@ create view authors_details as
 
 -- successful clicks to articles and authors joined
 create view articles_details as 
-	select a.article_name, a.author_name, count (*) as click_count 
+	select a.article_name, a.article_title, a.author_name, count (*) as click_count 
 		from authors_details as a inner join log
-		on log.path like concat('%', a.article_name, '%')
+		on log.path like concat('/article/', a.article_name)
 		where log.status like '%200%'
-		group by a.article_name, a.author_name, log.path
+		group by a.article_name, a.article_title, a.author_name, log.path
 		order by click_count desc;
 
 
 -- most three popular articles
 create view popular_articles as
-	select articles_details.article_name as name, articles_details.click_count as count
+	select articles_details.article_title as title, articles_details.click_count as count
 		from articles_details
 		limit 3;
 
 
 -- most popular author
 create view popular_authors as
-	select a.author_name as name, count(*) as click_count
+	select a.author_title as title, count(*) as click_count
 		from authors_details as a inner join log
-		on log.path like concat('%', a.article_name, '%')
+		on log.path like concat('/article/', a.article_name)
 		where log.status like '%200%'
-		group by a.author_name
+		group by a.author_title
 		order by click_count desc;
 
 
