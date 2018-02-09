@@ -1,4 +1,4 @@
-"""create a reporting tool to run_queries"""
+"""Create a reporting tool to run_queries."""
 
 import psycopg2
 
@@ -6,7 +6,7 @@ DBNAME = 'news'
 
 
 def run_queries(user_query):
-    """execute user's query and returns the result in a table"""
+    """Execute user's query and returns the result in a table."""
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     c.execute(user_query)
@@ -16,12 +16,12 @@ def run_queries(user_query):
 
 
 def print_header(query_text):
-    """Prints a header before each query"""
+    """Print a header before each query."""
     print('\n\t' + query_text + '\n')
 
 
 def find_top_three_articles():
-    """Prints the three most popular articles"""
+    """Print the three most popular articles."""
     most_popular_articles = run_queries(('select * from popular_articles'))
     print_header('Three most popular articles')
 
@@ -30,7 +30,7 @@ def find_top_three_articles():
 
 
 def find_popular_authors():
-    """Prints the most popular authors in a sorted table"""
+    """Print the most popular authors in a sorted table."""
     most_popular_authors = run_queries(('select * from popular_authors'))
     print_header('Most popular authors based on article-clicks')
 
@@ -39,7 +39,7 @@ def find_popular_authors():
 
 
 def find_bad_requests():
-    """Prints 1% of the 404 requests per day"""
+    """Print 1% of the 404 requests per day."""
     bad_requests = run_queries(('select * from high_error_days'))
     print_header('All bad requests that exceed 1% of the total requests')
 
