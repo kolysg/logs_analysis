@@ -50,26 +50,26 @@ create view popular_authors as
 -- total requests per day
 create view total_rqsts as 
 	select date(log.time) as day, count(log.id) as total
-	from log
-	group by (date(log.time))
-	order by (date(log.time));
+		from log
+		group by (date(log.time))
+		order by (date(log.time));
 
 
 -- total bad requests per day
 create view error_rqsts as 
 	select date(log.time) as day, count(log.id) as total_errors
-	from log
-	where log.status like '404%'
-	group by (date(log.time))
-	order by (date(log.time));
+		from log
+		where log.status like '404%'
+		group by (date(log.time))
+		order by (date(log.time));
 
 
 -- days where bad requests are > 1%
 create view high_error_days as 
 	select t.day as day,
 	round(e.total_errors::numeric * 100::numeric / t.total::numeric, 2) as percentage
-	from total_rqsts as t join error_rqsts as e
-	on t.day = e.day
-	where round(e.total_errors::numeric * 100::numeric / t.total::numeric, 2) > 1::numeric;
+		from total_rqsts as t join error_rqsts as e
+		on t.day = e.day
+		where round(e.total_errors::numeric * 100::numeric / t.total::numeric, 2) > 1::numeric;
 
 

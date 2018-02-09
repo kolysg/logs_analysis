@@ -47,9 +47,9 @@ def find_bad_requests():
 		print ('{0:%B %d, %Y} -- {1:.1f} % errors'.format(day, percentage))
 
 if __name__ == '__main__':
-	# find_top_three_articles();
-	# find_popular_authors();
-	find_bad_requests();
+	find_top_three_articles()
+	find_popular_authors()
+	find_bad_requests()
 
 
 
